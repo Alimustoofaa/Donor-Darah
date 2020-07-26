@@ -1,0 +1,49 @@
+<%- include('partials/header') %>
+<%- include('partials/navbar') %>
+<%- include('partials/sidebar') %>
+<div class="main-panel">
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h3><%= tittle %></h3>
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th> No </th>
+                  <th> user </th>
+                  <th> Nama </th>
+                  <th> Username </th>
+                  <th> Email </th>
+                  <th> Role </th>
+                  <th> Created At </th>
+                  <th> last Login </th>
+                  <th> Status </th>
+                </tr>
+              </thead>
+              <tbody>
+                <% i = 1 %>
+                <% results.forEach(function(r) { %>
+                <tr>
+                    <td><%= i++ %></td>
+                    <td class="py-1"><img src="/images/faces-clipart/pic-1.png" alt="image" /> </td>
+                    <td><%= r.name %> </td>
+                    <td><%= r.username %> </td>
+                    <td><%= r.email %> </td>
+                    <td><%= r.role_name %> </td>
+                    <td><%= r.created %> </td>
+                    <td><%= moment(r.last_login, "Do MMMM YYYY").endOf('day').fromNow() %> </td>
+                    <td>
+                        <% if(r.status == true) { %>
+                            <label class="badge badge-success">Actived</label>
+                        <% } else { %>
+                            <label class="badge badge-danger">Non Actived</label>
+                        <% } %>
+                    </td>
+                </tr>
+                <% }); %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+<%- include('partials/footer') %>
