@@ -1,4 +1,5 @@
 const passport = require('passport')
+const db = require('../config/database')
 
 const loginUser = async (req, res) => {
     if(req.isAuthenticated()){
@@ -14,7 +15,7 @@ const loginUser = async (req, res) => {
 
 const logoutUser = async (req, res) => {
     if(req.isAuthenticated()){
-        console.log(new Date())
+        await db.none('UPDATE tbl_users SET last_login = NOW() WHERE email = $1', [req.user.email])
         console.log('User [' + req.user.username + '] has logged out.')
         req.logout()
         res.redirect('/');

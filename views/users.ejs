@@ -18,6 +18,7 @@
                   <th> Created At </th>
                   <th> last Login </th>
                   <th> Status </th>
+                  <th> Action </th>
                 </tr>
               </thead>
               <tbody>
@@ -31,13 +32,21 @@
                     <td><%= r.email %> </td>
                     <td><%= r.role_name %> </td>
                     <td><%= r.created %> </td>
-                    <td><%= moment(r.last_login, "Do MMMM YYYY").endOf('day').fromNow() %> </td>
+                    <td><%= moment(r.last_login, "Do MMMM YYYY").calendar() %> </td>
                     <td>
                         <% if(r.status == true) { %>
                             <label class="badge badge-success">Actived</label>
                         <% } else { %>
                             <label class="badge badge-danger">Non Actived</label>
                         <% } %>
+                    </td>
+                    <td>
+                      <button type="button" class="btn btn-secondary btn-fw" onclick= window.location.href="../users/edit/<%= r.idu %>">
+                        <i class="mdi mdi-cloud-download"></i>Edit
+                      </button>
+                      <button type="button" class="btn btn-outline-danger btn-fw">
+                        <i class="mdi mdi-cloud-download"></i>Delete
+                      </button>
                     </td>
                 </tr>
                 <% }); %>
