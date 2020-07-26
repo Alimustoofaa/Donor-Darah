@@ -19,9 +19,7 @@ const allUser = async (req, res) => {
                 tittle: 'Data Users'
             })
         })
-        .catch(e => {
-            throw e
-        })
+        .catch(e => {throw e})
     } else {
         req.flash('error', 'Silahkan login dahulu')
         res.redirect('/login')
