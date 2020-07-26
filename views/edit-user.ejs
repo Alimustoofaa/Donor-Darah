@@ -1,0 +1,111 @@
+<%- include('partials/header') %>
+<%- include('partials/navbar') %>
+<%- include('partials/sidebar') %>
+<div class="main-panel">
+<div class="col-12 grid-margin">
+    <div class="card">
+      <div class="card-body">
+        <h3><%= tittle %></h3>
+        <form class="form-sample">
+          <p class="card-description"> Silahkan edit user </p>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label require">Nama</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" value="<%= user.name %>">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label require">Username</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" value="<%= user.username %>">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Email</label>
+                <div class="col-sm-9">
+                  <input type="email" class="form-control" value="<%= user.email %>">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Date of Birth</label>
+                <div class="col-sm-9">
+                  <input class="form-control" placeholder="dd/mm/yyyy">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Role</label>
+                <div class="col-sm-9">
+                  <select class="form-control">
+                    <% role.forEach(function(r) { %>
+                    <option value="<%= r.id %>"><%= r.role %></option>
+                    <% }); %>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+            <div class="row">
+                <button class="btn btn-danger btn-fw" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                 Mau Ganti Password ?
+                </button>
+            </div>
+                <div class="collapse" id="collapseExample">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label require">Password Baru</label>
+                                <div class="col-sm-9">
+                                    <input type="password" class="form-control">
+                                </div>
+                            </div>
+                            </div>
+                            <div class="col-md-12">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label require">Konfirmasi Password Baru</label>
+                                <div class="col-sm-9">
+                                    <input type="password" class="form-control">
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group row">
+                      <div class="col-sm-4">
+                        <div class="form-radio">
+                          <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="membershipRadios" id="membershipRadios1" value="" checked=""> Non Active <i class="input-helper"></i></label>
+                        </div>
+                      </div>
+                      <div class="col-sm-5">
+                        <div class="form-radio">
+                          <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="membershipRadios" id="membershipRadios2" value="option2"> Active <i class="input-helper"></i></label>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+      </div>
+    </div>
+</div>
+<%- include('partials/footer') %>

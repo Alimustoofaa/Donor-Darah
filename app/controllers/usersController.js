@@ -26,4 +26,29 @@ const allUser = async (req, res) => {
     }
 }
 
-module.exports = {allUser}
+const editUser = async (req, res) => {
+    let id = req.params.id
+    if (req.isAuthenticated()){
+        db.task('Get user role', async t => {
+            const resultUser = await t.one(`SELECT * FROM tbl_users WHERE id = $1`, [id]);
+            const resultRole = await t.any(`SELECT * FROM tbl_role`);
+            return { resultUser, resultRole }
+        })
+        .then(data => {
+           res.render('edit-user', {
+                user: data.resultUser,
+                role: data.resultRole,
+                tittle: 'Data Users'
+           })
+            
+        }).catch((err) => {
+            res.send(err)
+        });
+            
+    } else {
+        req.flash('error', 'Silahkan login dahulu')
+        res.redirect('/login')
+    }
+}
+
+module.exports = {allUser, editUser}
