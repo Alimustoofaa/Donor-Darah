@@ -3,6 +3,7 @@ const expres = require('express')
 const moment = require('moment')
 const { result } = require('../config/database')
 const e = require('express')
+const { usernameRegex}  = require('../helpers/validations')
 
 const allUser = async (req, res) => {
     if (req.isAuthenticated()){
@@ -26,7 +27,7 @@ const allUser = async (req, res) => {
     }
 }
 
-const editUser = async (req, res) => {
+const getEditUser = async (req, res) => {
     let id = req.params.id
     if (req.isAuthenticated()){
         db.task('Get user role', async t => {
@@ -51,4 +52,33 @@ const editUser = async (req, res) => {
     }
 }
 
-module.exports = {allUser, editUser}
+const editUser = async (req, res) => {
+    if (req.isAuthenticated()){
+        const { 
+            name, username, email, 
+            newPass, newPassKonf, status, id 
+        } = req.body
+        if (!usernameRegex(username)) { req.flash('error', 'Format username salah'), res.redirect('/') };
+        if (newPass != newPassKonf) { req.flash('error', 'New Password dan Konfirmasi password tidak sama'), res.redirect('/') };
+        await db.any(`SELECT email, username FROM tbl_users 
+                    WHERE email = (SELECT email FROM tbl_users WHERE NOT id = ${id})
+                    OR username = (SELECT username FROM tbl_users WHERE NOT id = ${id})`)
+        .then((result) => {
+            if (result.length > 0) {
+                // Check email
+                if (result[0].email) { req.flash('error', 'Email sudah digunakan'), res.redirect('/') };
+                // Check username
+                if (result[0].username) { req.flash('error', 'Username sudah digunakan'), res.redirect('/') };
+            }
+           
+        }).catch((err) => {
+           console.log(err)
+        });
+        
+    } else {
+        req.flash('error', 'Silahkan login dahulu')
+        res.redirect('/login')
+    }
+}
+
+module.exports = {allUser, getEditUser, editUser}

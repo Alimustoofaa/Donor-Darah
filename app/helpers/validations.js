@@ -10,8 +10,13 @@ const comparePassword = (password, hashPassword) => {
     return bcyrpt.compareSync(password, hashPassword);
 }
 
+const usernameRegex = (username) => {
+   const regex = /^(?=.{8,20}$)[a-zA-Z0-9]+([a-zA-Z0-9](_|-| )[a-zA-Z0-9])*[a-zA-Z0-9]+$/
+   return regex.test(username);
+}
 
 module.exports = {
     hashPassword,
-    comparePassword
+    comparePassword,
+    usernameRegex
 }

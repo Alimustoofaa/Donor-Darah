@@ -6,14 +6,14 @@
     <div class="card">
       <div class="card-body">
         <h3><%= tittle %></h3>
-        <form class="form-sample">
+        <form class="form-sample" action="/users/edit" method="POST">
           <p class="card-description"> Silahkan edit user </p>
           <div class="row">
             <div class="col-md-6">
               <div class="form-group row">
                 <label class="col-sm-3 col-form-label require">Nama</label>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" value="<%= user.name %>">
+                  <input type="text" class="form-control" value="<%= user.name %>" name="name">
                 </div>
               </div>
             </div>
@@ -21,7 +21,7 @@
               <div class="form-group row">
                 <label class="col-sm-3 col-form-label require">Username</label>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" value="<%= user.username %>">
+                  <input type="text" class="form-control" value="<%= user.username %>" name="username">
                 </div>
               </div>
             </div>
@@ -31,15 +31,7 @@
               <div class="form-group row">
                 <label class="col-sm-3 col-form-label">Email</label>
                 <div class="col-sm-9">
-                  <input type="email" class="form-control" value="<%= user.email %>">
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group row">
-                <label class="col-sm-3 col-form-label">Date of Birth</label>
-                <div class="col-sm-9">
-                  <input class="form-control" placeholder="dd/mm/yyyy">
+                  <input type="email" class="form-control" value="<%= user.email %>" name="email">
                 </div>
               </div>
             </div>
@@ -70,7 +62,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label require">Password Baru</label>
                                 <div class="col-sm-9">
-                                    <input type="password" class="form-control">
+                                    <input type="password" class="form-control" name="newPass">
                                 </div>
                             </div>
                             </div>
@@ -78,7 +70,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-3 col-form-label require">Konfirmasi Password Baru</label>
                                 <div class="col-sm-9">
-                                    <input type="password" class="form-control">
+                                    <input type="password" class="form-control" name="newPassKonf">
                                 </div>
                             </div>
                             </div>
@@ -92,18 +84,29 @@
                       <div class="col-sm-4">
                         <div class="form-radio">
                           <label class="form-check-label">
-                            <input type="radio" class="form-check-input" name="membershipRadios" id="membershipRadios1" value="" checked=""> Non Active <i class="input-helper"></i></label>
+                            <% if(user.status == false) { %>  
+                                <input type="radio" class="form-check-input" name="membershipRadios" id="status" value="false" checked=""> Non Active <i class="input-helper"></i></label>
+                            <% } else { %>
+                                <input type="radio" class="form-check-input" name="membershipRadios" id="status" value="false" > Non Active <i class="input-helper"></i></label>
+                            <% } %>
                         </div>
                       </div>
                       <div class="col-sm-5">
                         <div class="form-radio">
                           <label class="form-check-label">
-                            <input type="radio" class="form-check-input" name="membershipRadios" id="membershipRadios2" value="option2"> Active <i class="input-helper"></i></label>
+                            <% if(user.status == true) { %>  
+                                <input type="radio" class="form-check-input" name="membershipRadios" id="membershipRadios2" value="true"  checked=""> Active <i class="input-helper"></i></label>
+                            <% } else { %>
+                                <input type="radio" class="form-check-input" name="membershipRadios" id="membershipRadios1" value="true" > Active <i class="input-helper"></i></label>
+                            <% } %>
                         </div>
                       </div>
                     </div>
                 </div>
             </div>
+            <input type="hidden" name="id" value="<%= user.id %>">
+            <button type="submit" class="btn btn-success mr-2">EDIT</button>
+            <button class="btn btn-light">CANCEL</button>
         </form>
       </div>
     </div>
