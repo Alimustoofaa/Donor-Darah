@@ -58,17 +58,17 @@ const editUser = async (req, res) => {
             name, username, email, 
             newPass, newPassKonf, status, id 
         } = req.body
-        if (!usernameRegex(username)) { req.flash('error', 'Format username salah'), res.redirect('/') };
-        if (newPass != newPassKonf) { req.flash('error', 'New Password dan Konfirmasi password tidak sama'), res.redirect('/') };
+        if (!usernameRegex(username)) { req.flash('error', 'Format username salah'), res.redirect('/users/edit/'+id) };
+        if (newPass != newPassKonf) { req.flash('error', 'New Password dan Konfirmasi password tidak sama'), res.redirect('/users/edit/'+id) };
         await db.any(`SELECT email, username FROM tbl_users 
                     WHERE email = (SELECT email FROM tbl_users WHERE NOT id = ${id})
                     OR username = (SELECT username FROM tbl_users WHERE NOT id = ${id})`)
         .then((result) => {
             if (result.length > 0) {
                 // Check email
-                if (result[0].email) { req.flash('error', 'Email sudah digunakan'), res.redirect('/') };
+                if (result[0].email) { req.flash('error', 'Email sudah digunakan'), res.redirect('/users/edit/'+id) };
                 // Check username
-                if (result[0].username) { req.flash('error', 'Username sudah digunakan'), res.redirect('/') };
+                if (result[0].username) { req.flash('error', 'Username sudah digunakan'), res.redirect('/users/edit/'+id) };
             }
            
         }).catch((err) => {

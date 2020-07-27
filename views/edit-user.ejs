@@ -8,6 +8,11 @@
         <h3><%= tittle %></h3>
         <form class="form-sample" action="/users/edit" method="POST">
           <p class="card-description"> Silahkan edit user </p>
+          <% if(typeof error !== 'undefined' && error && error.length > 0) { %>
+            <label class="text-small" style="color: red; text-align: center; font-weight: bold;">*<%= error %></label>
+          <% } else if (typeof success !== 'undefined' && success && success.length > 0) { %>
+            <label class="text-small" style="color: blue; text-align: center; font-weight: bold;">*<%= success %></label>
+          <% } %>
           <div class="row">
             <div class="col-md-6">
               <div class="form-group row">
