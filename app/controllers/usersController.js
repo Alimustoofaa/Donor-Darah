@@ -62,7 +62,6 @@ const editUser = async (req, res) => {
                 req.flash('error', errors.array()[i].msg), res.redirect('/users/edit/'+req.body.id)
            }
         }
-
         const { 
             name, username, email, 
             newPass, newPassKonf, status, id 
