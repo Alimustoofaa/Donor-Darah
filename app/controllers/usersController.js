@@ -4,6 +4,7 @@ const moment = require('moment')
 const { result } = require('../config/database')
 const e = require('express')
 const { usernameRegex}  = require('../helpers/validations')
+const { validationResult } = require('express-validator/check')
 
 const allUser = async (req, res) => {
     if (req.isAuthenticated()){
@@ -54,6 +55,14 @@ const getEditUser = async (req, res) => {
 
 const editUser = async (req, res) => {
     if (req.isAuthenticated()){
+        // Validation
+        const errors = validationResult(req);
+        if (!errors.isEmpty()){
+           for(let i =0; i < validationResult.length; i++){
+                req.flash('error', errors.array()[i].msg), res.redirect('/users/edit/'+req.body.id)
+           }
+        }
+
         const { 
             name, username, email, 
             newPass, newPassKonf, status, id 
