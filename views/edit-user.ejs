@@ -46,7 +46,7 @@
               <div class="form-group row">
                 <label class="col-sm-3 col-form-label">Role</label>
                 <div class="col-sm-9">
-                  <select class="form-control">
+                  <select class="form-control" name="role" id="role">
                     <% role.forEach(function(r) { %>
                     <option value="<%= r.id %>"><%= r.role %></option>
                     <% }); %>
@@ -90,9 +90,9 @@
                         <div class="form-radio">
                           <label class="form-check-label">
                             <% if(user.status == false) { %>  
-                                <input type="radio" class="form-check-input" name="membershipRadios" id="status" value="false" checked=""> Non Active <i class="input-helper"></i></label>
+                                <input type="radio" class="form-check-input" name="status" id="status" value="false" checked=""> Non Active <i class="input-helper"></i></label>
                             <% } else { %>
-                                <input type="radio" class="form-check-input" name="membershipRadios" id="status" value="false" > Non Active <i class="input-helper"></i></label>
+                                <input type="radio" class="form-check-input" name="status" id="status" value="false" > Non Active <i class="input-helper"></i></label>
                             <% } %>
                         </div>
                       </div>
@@ -100,9 +100,9 @@
                         <div class="form-radio">
                           <label class="form-check-label">
                             <% if(user.status == true) { %>  
-                                <input type="radio" class="form-check-input" name="membershipRadios" id="membershipRadios2" value="true"  checked=""> Active <i class="input-helper"></i></label>
+                                <input type="radio" class="form-check-input" name="status" id="status" value="true"  checked=""> Active <i class="input-helper"></i></label>
                             <% } else { %>
-                                <input type="radio" class="form-check-input" name="membershipRadios" id="membershipRadios1" value="true" > Active <i class="input-helper"></i></label>
+                                <input type="radio" class="form-check-input" name="status" id="status" value="true" > Active <i class="input-helper"></i></label>
                             <% } %>
                         </div>
                       </div>

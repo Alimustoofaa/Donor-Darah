@@ -3,8 +3,9 @@ const expres = require('express')
 const moment = require('moment')
 const { result } = require('../config/database')
 const e = require('express')
-const { usernameRegex}  = require('../helpers/validations')
+const { usernameRegex, hashPassword, passwordRegex}  = require('../helpers/validations')
 const { validationResult } = require('express-validator/check')
+const { assert, empty } = require('joi')
 
 const allUser = async (req, res) => {
     if (req.isAuthenticated()){
@@ -57,6 +58,7 @@ const editUser = async (req, res) => {
     if (req.isAuthenticated()){
         // Validation
         const errors = validationResult(req);
+        console.log(errors)
         if (!errors.isEmpty()){
            for(let i =0; i < validationResult.length; i++){
                 req.flash('error', errors.array()[i].msg), res.redirect('/users/edit/'+req.body.id)
@@ -67,22 +69,38 @@ const editUser = async (req, res) => {
             newPass, newPassKonf, status, id 
         } = req.body
         if (!usernameRegex(username)) { req.flash('error', 'Format username salah'), res.redirect('/users/edit/'+id) };
-        if (newPass != newPassKonf) { req.flash('error', 'New Password dan Konfirmasi password tidak sama'), res.redirect('/users/edit/'+id) };
         await db.any(`SELECT email, username FROM tbl_users 
                     WHERE email = (SELECT email FROM tbl_users WHERE NOT id = ${id})
                     OR username = (SELECT username FROM tbl_users WHERE NOT id = ${id})`)
-        .then((result) => {
+        .then(async (result) => {
             if (result.length > 0) {
                 // Check email
                 if (result[0].email) { req.flash('error', 'Email sudah digunakan'), res.redirect('/users/edit/'+id) };
                 // Check username
                 if (result[0].username) { req.flash('error', 'Username sudah digunakan'), res.redirect('/users/edit/'+id) };
             }
-           
-        }).catch((err) => {
-           console.log(err)
-        });
-        
+
+            // new Password and new password Konfirmasi empty
+            if (newPass == '' && newPassKonf == '') {
+                await db.none(`UPDATE tbl_users SET name = '${name}', username = '${username}',
+                                email = '${email}', status = '${status}'  WHERE id = ${id}`)
+                .then(() => { req.flash('success', 'User berhasil diedit'), res.redirect('/')} )
+                .catch(() => { req.flash('error', 'Gagal edit user silahkan coba lagi'), res.redirect('/users/edit/'+id)} );
+            } else {
+                if ( !passwordRegex(newPass)) { req.flash('error', 'Password validasi salah'), res.redirect('/users/edit/'+id)};
+                if ( !passwordRegex(newPassKonf)) { req.flash('error', 'Password validasi salah'), res.redirect('/users/edit/'+id)};
+
+                if (newPass != newPassKonf) { 
+                    req.flash('error', 'New Password dan Konfirmasi password tidak sama'), res.redirect('/users/edit/'+id) 
+                };
+
+                let newpassHash = await hashPassword(newPass);
+                await db.none( `UPDATE tbl_users SET name = '${name}', username = '${username}',
+                                email = '${email}', password = '${newpassHash}', status = '${status}'  WHERE id = ${id}`)
+                .then(() => { req.flash('success', 'User berhasil diedit'), res.redirect('/')} )
+                .catch(() => { req.flash('error', 'Gagal edit user silahkan coba lagi'), res.redirect('/users/edit/'+id)} )
+            }           
+        }).catch(() => { req.flash('error', 'Silahkan coba lagi'), res.redirect('/users/edit/'+id)} );
     } else {
         req.flash('error', 'Silahkan login dahulu')
         res.redirect('/login')

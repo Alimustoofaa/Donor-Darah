@@ -15,8 +15,15 @@ const usernameRegex = (username) => {
    return regex.test(username);
 }
 
+// Password Regex
+const passwordRegex = (password) => {
+    const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,128}$/
+    return regex.test(password)
+}
+
 module.exports = {
     hashPassword,
     comparePassword,
-    usernameRegex
+    usernameRegex,
+    passwordRegex
 }
