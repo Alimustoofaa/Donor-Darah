@@ -69,8 +69,8 @@ const editUser = async (req, res) => {
         } = req.body
         if (!usernameRegex(username)) { req.flash('error', 'Format username salah'), res.redirect('/users/edit/'+id) };
         await db.any(`SELECT email, username FROM tbl_users 
-                    WHERE email = (SELECT email FROM tbl_users WHERE NOT id = ${id})
-                    OR username = (SELECT username FROM tbl_users WHERE NOT id = ${id})`)
+                    WHERE email = (SELECT email FROM tbl_users WHERE email = '${email}' AND NOT id = ${id})
+                    OR username = (SELECT username FROM tbl_users WHERE username = '${username}' AND NOT id = ${id})`)
         .then(async (result) => {
             if (result.length > 0) {
                 // Check email
