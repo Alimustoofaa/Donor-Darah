@@ -58,7 +58,6 @@ const editUser = async (req, res) => {
     if (req.isAuthenticated()){
         // Validation
         const errors = validationResult(req);
-        console.log(errors)
         if (!errors.isEmpty()){
            for(let i =0; i < validationResult.length; i++){
                 req.flash('error', errors.array()[i].msg), res.redirect('/users/edit/'+req.body.id)
@@ -107,4 +106,70 @@ const editUser = async (req, res) => {
     }
 }
 
-module.exports = {allUser, getEditUser, editUser}
+const getAddUser = async (req, res) => {
+    if (req.isAuthenticated()){
+        // Get values rolee
+        await db.any(`SELECT * FROM tbl_role`)
+        .then(results => {
+            res.render('add-user', {
+                role: results,
+                tittle: 'Add User'
+            })
+        }).catch(err => {
+            res.send(err)
+        })
+    } else {
+        req.flash('error', 'Silahkan login dahulu')
+        res.redirect('/login')
+    }
+}
+
+const addUser = async (req, res) =>{
+    if(req.isAuthenticated()) {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()){
+           for(let i =0; i < validationResult.length; i++){
+                req.flash('error', errors.array()[i].msg), res.redirect('/users/edit/'+req.body.id)
+           }
+        }
+        const {
+            name, username, email, pass,
+            passKonf, role, status
+        } = req.body;
+
+        if (!usernameRegex(username)) { req.flash('error', 'Format username salah'), res.redirect('/users/add') };
+        await db.any (`SELECT email, username FROM tbl_users
+                    WHERE email = (SELECT email FROM tbl_users WHERE email = '${email}')
+                    OR username = (SELECT username FROM tbl_users WHERE username = '${username}')`)
+        .then(async (result) => {
+            if (result.length > 0) {
+                // Check email
+                if (result[0].email) { req.flash('error', 'Email sudah digunakan'), res.redirect('/users/add') };
+                // Check username
+                if (result[0].username) { req.flash('error', 'Username sudah digunakan'), res.redirect('/users/add') };
+            }
+
+            if ( !passwordRegex(pass)) { req.flash('error', 'Password validasi salah'), res.redirect('/users/add') };
+            if ( !passwordRegex(passKonf)) { req.flash('error', 'Password validasi salah'), res.redirect('/users/add') };
+
+            if ( pass != passKonf ) {
+                req.flash('error', 'Password dan Konfirmasi password tidak sama'), res.redirect('/users/add') 
+            };
+            
+            let createdBy = req.user.name;
+            let passHash = await hashPassword(pass);
+            await db.none(` INSERT INTO tbl_users(
+                            name, username, email, password, role, status, created_by, created) VALUES (
+                            '${name}', '${username}', '${email}', '${passHash}', '${role}', '${status}', '${createdBy}', 'NOW()')`)
+            .then(() => { req.flash('success', `User ${name} berhasil ditambahkan`), res.redirect('/')} )
+            .catch((e) => console.log(e));//{ req.flash('error', 'Gagal menambahkan user silahkan coba lagi'), res.redirect('/users/add')} );
+        })
+    } else {
+        req.flash('error', 'Silahkan login dahulu')
+        res.redirect('/login')
+    }
+}
+
+module.exports = {
+    allUser, getEditUser, editUser, 
+    addUser, getAddUser }

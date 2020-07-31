@@ -31,7 +31,7 @@
                     <td><%= r.username %> </td>
                     <td><%= r.email %> </td>
                     <td><%= r.role_name %> </td>
-                    <td><%= r.created %> </td>
+                    <td><%= moment(r.created).format('dddd, LL') %> </td>
                     <td><%= moment(r.last_login, "Do MMMM YYYY").calendar() %> </td>
                     <td>
                         <% if(r.status == true) { %>

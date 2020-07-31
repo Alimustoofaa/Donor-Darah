@@ -1,0 +1,101 @@
+<%- include('partials/header') %>
+<%- include('partials/navbar') %>
+<%- include('partials/sidebar') %>
+<div class="main-panel">
+<div class="col-12 grid-margin">
+    <div class="card">
+      <div class="card-body">
+        <h3><%= tittle %></h3>
+        <form class="form-sample" action="/users/add" method="POST">
+          <p class="card-description"> Silahkan menambahkan user </p>
+          <% if(typeof error !== 'undefined' && error && error.length > 0) { %>
+            <label class="text-small" style="color: red; text-align: center; font-weight: bold;">*<%= error %></label>
+          <% } else if (typeof success !== 'undefined' && success && success.length > 0) { %>
+            <label class="text-small" style="color: blue; text-align: center; font-weight: bold;">*<%= success %></label>
+          <% } %>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label require">Nama</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" placeholder="Ali Mustofa" name="name">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label require">Username</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" placeholder="AliBro2020" name="username">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Email</label>
+                <div class="col-sm-9">
+                  <input type="email" class="form-control" placeholder="haiali@gmail.com" name="email">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Role</label>
+                <div class="col-sm-9">
+                  <select class="form-control" name="role" id="role">
+                    <% role.forEach(function(r) { %>
+                    <option value="<%= r.id %>"><%= r.role %></option>
+                    <% }); %>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label require">Password</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" placeholder="Masukkan Password" name="pass">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label require">Password Konfirmasi</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" placeholder="Masukkan Ulang Password" name="passKonf">
+                </div>
+              </div>
+            </div>
+          </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group row">
+                      <div class="col-sm-4">
+                        <div class="form-radio">
+                          <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="status" id="status" value="false" checked=""> Non Active <i class="input-helper"></i></label>
+                        </div>
+                      </div>
+                      <div class="col-sm-5">
+                        <div class="form-radio">
+                          <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="status" id="status" value="true" > Active <i class="input-helper"></i></label>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success mr-2">ADD</button>
+            <button class="btn btn-light">CANCEL</button>
+        </form>
+      </div>
+    </div>
+</div>
+<%- include('partials/footer') %>
