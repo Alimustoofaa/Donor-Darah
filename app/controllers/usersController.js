@@ -162,7 +162,7 @@ const addUser = async (req, res) =>{
                             name, username, email, password, role, status, created_by, created) VALUES (
                             '${name}', '${username}', '${email}', '${passHash}', '${role}', '${status}', '${createdBy}', 'NOW()')`)
             .then(() => { req.flash('success', `User ${name} berhasil ditambahkan`), res.redirect('/')} )
-            .catch((e) => console.log(e));//{ req.flash('error', 'Gagal menambahkan user silahkan coba lagi'), res.redirect('/users/add')} );
+            .catch(() => { req.flash('error', 'Gagal menambahkan user silahkan coba lagi'), res.redirect('/users/add')} );
         })
     } else {
         req.flash('error', 'Silahkan login dahulu')
