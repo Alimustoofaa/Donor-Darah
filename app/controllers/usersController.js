@@ -170,6 +170,19 @@ const addUser = async (req, res) =>{
     }
 }
 
+const deleteUser = async (req, res) => {
+    if (req.isAuthenticated()) {
+        const { id, name } = req.body;
+        console.log(req.body)
+        await db.none(`DELETE FROM tbl_users WHERE id = ${id}`)
+        .then(() => { req.flash('success', `User ${name} berhasil ditambahkan`), res.redirect('/')} )
+        .catch((e) => console.log(e))//{ req.flash('error', 'Gagal menghapus user silahkan coba lagi'), res.redirect('/')} );
+    } else {
+        req.flash('error', 'Silahkan login dahulu')
+        res.redirect('/login')
+    }
+}
+
 module.exports = {
     allUser, getEditUser, editUser, 
-    addUser, getAddUser }
+    addUser, getAddUser, deleteUser }
