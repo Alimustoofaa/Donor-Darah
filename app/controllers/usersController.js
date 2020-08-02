@@ -129,7 +129,7 @@ const addUser = async (req, res) =>{
         const errors = validationResult(req);
         if (!errors.isEmpty()){
            for(let i =0; i < validationResult.length; i++){
-                req.flash('error', errors.array()[i].msg), res.redirect('/users/edit/'+req.body.id)
+                req.flash('error', errors.array()[i].msg), res.redirect('/users/add')
            }
         }
         const {
