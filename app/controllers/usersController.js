@@ -83,7 +83,7 @@ const editUser = async (req, res) => {
             if (newPass == '' && newPassKonf == '') {
                 await db.none(`UPDATE tbl_users SET name = '${name}', username = '${username}',
                                 email = '${email}', status = '${status}'  WHERE id = ${id}`)
-                .then(() => { req.flash('success', 'User berhasil diedit'), res.redirect('/')} )
+                .then(() => { req.flash('success', 'User berhasil diedit'), res.redirect('/users')} )
                 .catch(() => { req.flash('error', 'Gagal edit user silahkan coba lagi'), res.redirect('/users/edit/'+id)} );
             } else {
                 if ( !passwordRegex(newPass)) { req.flash('error', 'Password validasi salah'), res.redirect('/users/edit/'+id)};
@@ -96,7 +96,7 @@ const editUser = async (req, res) => {
                 let newpassHash = await hashPassword(newPass);
                 await db.none( `UPDATE tbl_users SET name = '${name}', username = '${username}',
                                 email = '${email}', password = '${newpassHash}', status = '${status}'  WHERE id = ${id}`)
-                .then(() => { req.flash('success', 'User berhasil diedit'), res.redirect('/')} )
+                .then(() => { req.flash('success', 'User berhasil diedit'), res.redirect('/users')} )
                 .catch(() => { req.flash('error', 'Gagal edit user silahkan coba lagi'), res.redirect('/users/edit/'+id)} )
             }           
         }).catch(() => { req.flash('error', 'Silahkan coba lagi'), res.redirect('/users/edit/'+id)} );
@@ -161,7 +161,7 @@ const addUser = async (req, res) =>{
             await db.none(` INSERT INTO tbl_users(
                             name, username, email, password, role, status, created_by, created) VALUES (
                             '${name}', '${username}', '${email}', '${passHash}', '${role}', '${status}', '${createdBy}', 'NOW()')`)
-            .then(() => { req.flash('success', `User ${name} berhasil ditambahkan`), res.redirect('/')} )
+            .then(() => { req.flash('success', `User ${name} berhasil ditambahkan`), res.redirect('/users')} )
             .catch(() => { req.flash('error', 'Gagal menambahkan user silahkan coba lagi'), res.redirect('/users/add')} );
         })
     } else {
@@ -174,8 +174,8 @@ const deleteUser = async (req, res) => {
     if (req.isAuthenticated()) {
         const { id, name } = req.body;
         await db.none(`DELETE FROM tbl_users WHERE id = ${id}`)
-        .then(() => { req.flash('success', `User ${name} berhasil dihapus`), res.redirect('/')} )
-        .catch((e) => { req.flash('error', 'Gagal menghapus user silahkan coba lagi'), res.redirect('/')} );
+        .then(() => { req.flash('success', `User ${name} berhasil dihapus`), res.redirect('/users')} )
+        .catch((e) => { req.flash('error', 'Gagal menghapus user silahkan coba lagi'), res.redirect('/users')} );
     } else {
         req.flash('error', 'Silahkan login dahulu')
         res.redirect('/login')

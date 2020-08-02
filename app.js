@@ -41,7 +41,7 @@ app.use(function(req, res, next) {
 });
 
 app.use('/', loginRouter);
-app.use('/', usersRouter);
+app.use('/users', usersRouter);
 require('./app/config/passport')(passport)
 
 // error handler
