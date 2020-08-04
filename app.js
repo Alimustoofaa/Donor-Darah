@@ -12,6 +12,7 @@ var app = express();
 
 var loginRouter = require('./app/routes/loginRoute');
 var usersRouter = require('./app/routes/usersRouter');
+var companyRouter = require('./app/routes/companyRoute');
 // view engine setup
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('views', path.join(__dirname, 'views'));
@@ -42,6 +43,7 @@ app.use(function(req, res, next) {
 
 app.use('/', loginRouter);
 app.use('/users', usersRouter);
+app.use('/company', companyRouter);
 require('./app/config/passport')(passport)
 
 // error handler

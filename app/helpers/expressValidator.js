@@ -22,4 +22,16 @@ const addUserV = () => {
     return validate
 }
 
-module.exports = { editUserV, addUserV }
+const editCompanyV = () => {
+    const validate = [
+        body('id', 'id tidak valid').notEmpty().isInt().isLength({  max:1 }),
+        body('name', 'Nama tidak valid').notEmpty().isLength({ min: 6, max:255 }),
+        body('address', 'Alamat tidak valid').notEmpty(),
+        body('email', 'Email tidak valid').notEmpty().isEmail(),
+        body('tlp', 'Telephone tidak valid').notEmpty().isNumeric().isLength({ min: 8, max: 15}),
+        body('website', 'Website tidak valid').notEmpty().isLength({ min: 7})
+    ]
+    return validate
+}
+
+module.exports = { editUserV, addUserV, editCompanyV}
