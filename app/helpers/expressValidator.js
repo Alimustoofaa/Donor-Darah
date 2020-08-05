@@ -24,7 +24,7 @@ const addUserV = () => {
 
 const editCompanyV = () => {
     const validate = [
-        body('id', 'id tidak valid').notEmpty().isInt().isLength({  max:1 }),
+        body('id', 'id tidak valid').notEmpty().isNumeric().isLength({  max:2 }),
         body('name', 'Nama tidak valid').notEmpty().isLength({ min: 6, max:255 }),
         body('address', 'Alamat tidak valid').notEmpty(),
         body('email', 'Email tidak valid').notEmpty().isEmail(),

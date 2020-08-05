@@ -6,7 +6,7 @@
     <div class="card">
       <div class="card-body">
         <h3><%= tittle %></h3>
-        <form class="form-sample" action="/company/edit" method="POST">
+        <form class="form-sample" action="/company/edit" method="POST" enctype="multipart/form-data">
           <% if(typeof error !== 'undefined' && error && error.length > 0) { %>
             <label class="text-small" style="color: red; text-align: center; font-weight: bold;">*<%= error %></label>
           <% } else if (typeof success !== 'undefined' && success && success.length > 0) { %>
@@ -57,6 +57,14 @@
                 </div>
               </div>
             </div>
+            <div class="col-md-6">
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label require">Telephone</label>
+                <div class="col-sm-9">
+                  <input type="file" class="form-control"  name="image">
+                </div>
+            </div>
+          </div>
         </div>
            
             <input type="hidden" name="id" value="<%= result.id %>">
