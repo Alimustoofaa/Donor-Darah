@@ -1,7 +1,7 @@
 const db = require('../config/database');
 const { validationResult, body } = require('express-validator/check')
 const fs = require('fs-extra')
-const { upload } = require('../helpers/multer')
+
 
 const getCompany = async (req, res) => {
     if(!req.isAuthenticated()) {
@@ -29,24 +29,26 @@ const editCompany = async (req, res) => {
                 req.flash('error', errors.array()[i].msg), res.redirect('/company')
            }
         }
-        console.log(req)
         const {
             id, name, address, email,
             tlp, website
         } = req.body;
-        // upload image
-        const filtername = upload.none({
-            fileFilter: function(req, file, callback) {
-                if (file.mimetype !== 'image/jpg') {
-                    return callback(null, false, new Error('Formar file harus image'))
-                }
-                callback(null, true)
-            }
-        }).single('image');
 
-        await db.none(`UPDATE tbl_company SET name = '${name}', address = '${address}', 
-                    email = '${email}', tlp = '${tlp}', website = '${website}'
-                    WHERE id = '${id}'`)
+        // if condition upload image file
+        let imagePath;
+        if (req.file){ imagePath = req.file.path };
+
+        db.tx(t => {
+            if(!req.file){
+                t.none(`UPDATE tbl_company SET name = '${name}', address = '${address}', 
+                        email = '${email}', tlp = '${tlp}', website = '${website}'
+                        WHERE id = '${id}'`);
+            } else{
+                t.none(`UPDATE tbl_company SET name = '${name}', address = '${address}', 
+                        email = '${email}', tlp = '${tlp}', website = '${website}', logo = '${imagePath}'
+                        WHERE id = '${id}'`);    
+            }
+        })
         .then(() => { req.flash('success', 'User berhasil diedit'), res.redirect('/company')} )
         .catch(() => { req.flash('error', 'Gagal edit user silahkan coba lagi'), res.redirect('/company')} );
     }else{
