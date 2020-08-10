@@ -4,7 +4,7 @@ const fs = require('fs-extra')
 
 
 const getCompany = async (req, res) => {
-    if(!req.isAuthenticated()) {
+    if(req.isAuthenticated()) {
         db.one(`SELECT * FROM tbl_company`)
         .then(result => {
             res.render('company', {
@@ -22,7 +22,7 @@ const getCompany = async (req, res) => {
 }
 
 const editCompany = async (req, res) => {
-    if(!req.isAuthenticated()) {
+    if(req.isAuthenticated()) {
         const errors = validationResult(req);
         if (!errors.isEmpty()){
            for(let i =0; i < validationResult.length; i++){
