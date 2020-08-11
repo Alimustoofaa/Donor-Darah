@@ -1,0 +1,62 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+<%- include('../partials/sidebar') %>
+<div class="main-panel">
+<div class="col-12 grid-margin">
+    <div class="card">
+      <div class="card-body">
+        <h2>Content Posts</h2>
+        <% draf.forEach(function(r) { %>
+        <div class="card">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12 mt-3">
+                        <div class="card">
+                            <div class="card-horizontal" style="display: flex; flex: 1 1 auto;">
+                                <div class="img-square-wrapper">
+                                    <% if(r.image_post == null) { %>
+                                        <img class="" src="http://via.placeholder.com/300x180" alt="Card image cap">
+                                    <% } else { %>
+                                        <img class="" src="<%= r.image_post %>" alt="Card image cap">
+                                    <% } %>
+                                </div>
+                                <div class="card-body">
+                                    <h4 class="card-title"> <td><%= r.tittle %> </td></h4>
+                                    <p class="card-text"> <td><%= r.content.substring(0, 150) %> </td></p>
+                                    <button type="button" class="btn btn-primary btn-fw">
+                                        <i class="mdi mdi-eye"></i>Read More
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="row">
+                                    <div class="col-1">
+                                        <% if(!r.status) { %>
+                                            <labxel class="badge badge-warning">Content draf</label>
+                                        <% } else { %>
+                                            <labxel class="badge badge-success">Content publish</label>
+                                        <% } %>
+                                    </div>
+                                    <div class="col-8">
+                                        <small class="text-muted"><%= moment(r.created).format('dddd, LL') %></small>
+                                    </div>
+                                    <div class="col-3">
+                                        <button type="button" class="btn btn-secondary btn-fw" onclick=window.location.href="../post/edit/<%= r.idu %>">
+                                          <i class="mdi mdi-cloud-download"></i>Edit
+                                        </button>
+                                        <button type="button" class="btn btn-outline-danger btn-fw delete-modal" data-toggle="modal" data-target="#deleteModal" data-id="6" data-name="Paijo Bro">
+                                          <i class="mdi mdi-cloud-download"></i>Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% }); %>
+      </div>
+    </div>
+  </div>
+<%- include('../partials/footer') %>

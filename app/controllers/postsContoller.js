@@ -4,12 +4,12 @@ const e = require('express');
 const allPosts = async (req, res) => {
     if (req.isAuthenticated()){
         db.task('Get posts publish and draf', async t => {
-            const postPublish = await t.any(`SELECT * FROM tbl_post WHERE status = 'true'`);
-            const postDraf = await t.any(`SELECT * FROM tbl_posts WHERE status = 'false`);
+            const postPublish = await t.any(`SELECT * FROM tbl_posts WHERE status = true`);
+            const postDraf = await t.any(`SELECT * FROM tbl_posts WHERE status = false`);
             return { postPublish, postDraf}
         })
         .then(data => {
-            res.render('posts', {
+            res.render('posts/posts', {
                 publish: data.postPublish,
                 draf: data.postDraf,
                 title: 'Content Post'
